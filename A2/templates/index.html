@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <title>River Crossing Puzzle</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
     <!-- <link rel=stylesheet type=text/css href="main.css"> -->
@@ -17,10 +18,61 @@
 </head>
 
 <body>
-  <h2></h2>
+  <center>
+  <h1 class ="mt-5">River Solving Problem</h1>
+ </center>
   <div>
-
+    <div class="form-group InputContainer">
+      <input class ="mt-5 ms-5" style="width: 25% ; height: 39px" placeholder="Enter the number of type of soilders" style="color:black" name="number" id="soilderType"/>
+      <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="inputEachType()">Next</button>
+      <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="clearInputs()">Clear</button>
+    </div>
   </div>
+  <script>
+    function inputEachType()
+    {
+      var type = document.getElementById("soilderType");
+      type.setAttribute("disabled","disabled");
+      type=type.value;
+      var outer_cover = document.createElement("div");
+      outer_cover.setAttribute("id","soilderInp");
+      document.body.appendChild(outer_cover);
+      for(i=1;i<=type;i++)
+      {
+        var cover = document.createElement("div");
+        cover.setAttribute("class","mt-3 ms-5");
+        var inp = document.createElement("INPUT");
+        inp.setAttribute("placeholder", "Number of soilder of type " + i);
+        inp.setAttribute("id","type_"+i);
+        cover.appendChild(inp);
+        outer_cover.appendChild(cover);
+      }
+      var cover = document.createElement("div");
+      cover.setAttribute("class","mt-3 ms-5");
+      var cal =document.createElement("button");
+      cal.setAttribute("class" ,"btn btn-primary");
+      cal.innerHTML = "Calculate!!";
+      cover.appendChild(cal);
+      outer_cover.appendChild(cover);
+      
+      
+    }
+
+    function clearInputs()
+    {
+      var clear = document.getElementById("soilderInp");
+      clear.remove();
+      var type = document.getElementById("soilderType");
+      type.setAttribute("value",NULL);
+      type.removeAttribute("disabled");
+      
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
