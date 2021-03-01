@@ -14,6 +14,13 @@
           background-size: 100% 100%;
          
         } */
+        .dot {
+        height: 25px;
+        width: 25px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+      }
     </style>
 </head>
 
@@ -21,12 +28,28 @@
   <center>
   <h1 class ="mt-5">River Solving Problem</h1>
  </center>
-  <div>
-    <div class="form-group InputContainer">
-      <input class ="mt-5 ms-5" style="width: 25% ; height: 39px" placeholder="Enter the number of type of soilders" style="color:black" name="number" id="soilderType"/>
+  <div class="d-flex justify-content-evenly mt-5 ">
+    <div >
+      <h2>How to calculate the solution</h2>
+      <ul>
+      <li> First enter the number of type of soilders for which you want to solve the problem</li>
+      <li>Then enter the number of soilders of each type</li>
+      <li>Click on the next button to see the next step taken to reach the solution</li>
+      </ul>
+    </div>
+    <center>
+    <div id="inp" style="width:540px">
+     
+    <div class="d-flex justify-content-evenly" >
+      <input class =" " style="width:400px ; height: 39px" placeholder="Enter the number of type of soilders" style="color:black" name="number" id="soilderType"/>
       <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="inputEachType()" id="next">Next</button>
       <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="clearInputs()">Clear</button>
     </div>
+    <svg height="100" width="100">
+      <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+    </svg> 
+  </div>
+</center>
   </div>
   <script>
     function inputEachType()
@@ -34,11 +57,13 @@
       var type = document.getElementById("soilderType");
       type.setAttribute("disabled","disabled");
       var next = document.getElementById("next");
-      next.setAttribute("disabled","disabled");
+      next.setAttribute("disabled","true");
       type=type.value;
       var outer_cover = document.createElement("div");
       outer_cover.setAttribute("id","soilderInp");
-      document.body.appendChild(outer_cover);
+      outer_cover.setAttribute("class", "d-flex align-content-between flex-wrap");
+      
+      document.getElementById("inp").appendChild(outer_cover);
       for(i=1;i<=type;i++)
       {
         var cover = document.createElement("div");
@@ -52,28 +77,119 @@
       var cover = document.createElement("div");
       cover.setAttribute("class","mt-3 ms-5");
       var cal =document.createElement("button");
-      cal.setAttribute("class" ,"btn btn-primary");
+      cal.setAttribute("class" ,"btn btn-primary mt-3");
       cal.setAttribute("onclick","getAnswer()");
+      cal.setAttribute("id","cal_button");
       cal.innerHTML = "Calculate!!";
-      cover.appendChild(cal);
+      document.getElementById("inp").appendChild(cal);
       outer_cover.appendChild(cover);
-      
-      
     }
 
     function clearInputs()
     {
       var clear = document.getElementById("soilderInp");
       clear.remove();
+      document.getElementById("cal_button").remove();
       var type = document.getElementById("soilderType");
-      type.setAttribute("value",NULL);
+      // type.setAttribute("value",NULL);
       type.removeAttribute("disabled"); 
+      document.getElementById("next").removeAttribute("disabled");
     }
+
+    function set_state(num,colour,right_num,river_num)
+    {
+      for(i = 0;i<=num.length;i++)
+      {
+        if(num[i])
+        {
+          for(ii= 0 ;ii<num[ii];ii++)
+          {
+            var c = document.createElement("span");
+            c.setAttribute("class","dot");
+            c.setAttribute("style","background-color : "+colour[i]);
+            document.getElementById("left").appendChild(c);
+          }
+        }
+      }
+      for(i = 0;i<=right_num.length;i++)
+      {
+        if(right_num[i])
+        {
+          for(ii= 0 ;ii<right_num[ii];ii++)
+          {
+            var c = document.createElement("span");
+            c.setAttribute("class","dot");
+            c.setAttribute("style","background-color : "+colour[i]);
+            document.getElementById("right").appendChild(c);
+          }
+        }
+      }
+      for(i = 0;i<=river_num.length;i++)
+      {
+        if(river_num[i])
+        {
+          for(ii= 0 ;ii<river_num[ii];ii++)
+          {
+            var c = document.createElement("span");
+            c.setAttribute("class","dot");
+            c.setAttribute("style","background-color : "+colour[i]);
+            document.getElementById("river").appendChild(c);
+          }
+        }
+      }
+    }
+
+    function create_img(num_steps,step,num,right_num,river_num)
+    {
+      var colour =["blue","red","DarkGrey","ForestGreen","Orchid"]
+      var cover2 = document.createElement("div");
+      cover2.setAttribute("class","d-flex");
+      var left = document.createElement("div");
+      left.setAttribute("id","left");
+      left.setAttribute("class","d-flex align-content-between flex-wrap");
+      var right = document.createElement("div");
+      right.setAttribute("id","right");
+      right.setAttribute("class","d-flex align-content-between flex-wrap");
+      var river = document.createElement("div");
+      river.setAttribute("id","river");
+      river.setAttribute("class","d-flex align-content-between flex-wrap");
+      cover2.appendChild(left);
+      cover2.appendChild(right);
+      cover2.appendChild(river);
+      document.body.appendChild(cover2);
+      
+      set_state(num,colour,right_num,river_num);
+      
+    }
+
+
 
     function getAnswer()
     {
-      axios.post('http://0.0.0.0:3000/getSolution',{ number: document.getElementById("soilderType").value  })
+      var type = document.getElementById("soilderType").value;
+      var num =[];
+      for(i=1;i<=type;i++)
+      {
+        num.push(document.getElementById("type_"+i).value);
+      }
+      axios.post('http://0.0.0.0:3000/getSolution',{ number: document.getElementById("soilderType").value , values :num })
+      .then((res)=>{
+        var num_steps = res.data[1];
+        var step = res.data[0];
+        var right_num = new Array(num.length).fill(0);
+        var river_num = new Array(num.length).fill(0); 
+        create_img(num_steps,step,num,right_num,river_num);
+        for(var i=0;i< num_steps;i++)
+        {
+          
+        }
+      })
     }
+
+    
+
+    
+
   </script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

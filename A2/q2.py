@@ -82,18 +82,20 @@ def dfs(num_soldiers_west, num_soldiers_east, direction, stack, parent_action):
 		return solved, parent_action+1
 
 
-if __name__ == '__main__':
-	flag = True if input('Do you want custom input?[y/n]: ') == 'y' else False
-	if flag:
-		num_colours = int(input('Enter the number of colours(>1): '))
-		num_soldiers_west = {}
-		for i in range(num_colours):
-			colour = input('Enter colour name: ')
-			num_soldiers_west[colour] = int(
-				input('Enter the number of soldiers of that colour: '))
-	else:
-		num_soldiers_west = {'blue': 3, 'green': 3, 'red': 3}
-
+# if __name__ == '__main__':
+def cal(n,num_west):
+	# flag = True if input('Do you want custom input?[y/n]: ') == 'y' else False
+	# if flag:
+	# 	num_colours = int(input('Enter the number of colours(>1): '))
+	# 	num_soldiers_west = {}
+	# 	for i in range(num_colours):
+	# 		colour = input('Enter colour name: ')
+	# 		num_soldiers_west[colour] = int(
+	# 			input('Enter the number of soldiers of that colour: '))
+	# else:
+	# 	num_soldiers_west = {'blue': 3, 'green': 3, 'red': 3}
+	num_soldiers_west = num_west
+	print(num_west)
 	print(num_soldiers_west)
 	num_soldiers_east = {}
 	stack = []
@@ -105,5 +107,5 @@ if __name__ == '__main__':
 
 	else:
 		print('Not solved')
-
+	return stack
 	# print(list(combinations(num_soldiers_west.keys(), 2)))
