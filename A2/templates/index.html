@@ -7,29 +7,26 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/main.css') }}">
     <!-- <link rel=stylesheet type=text/css href="main.css"> -->
     <style>
-        /* body {
-           background-image: url("{{ url_for('static', filename='1.jpg') }}"); 
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          background-size: 100% 100%;
+        body { 
+           background-color: LightCyan;
          
-        } */
+        } 
         .dot {
         height: 25px;
         width: 25px;
         background-color: #bbb;
         border-radius: 50%;
         display: inline-block;
-      }
+        }
+      
     </style>
 </head>
-
 <body>
   <center>
   <h1 class ="mt-5">River Solving Problem</h1>
  </center>
   <div class="d-flex justify-content-evenly mt-5 ">
-    <div >
+    <div>
       <h2>How to calculate the solution</h2>
       <ul>
       <li> First enter the number of type of soilders for which you want to solve the problem</li>
@@ -45,13 +42,16 @@
       <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="inputEachType()" id="next">Next</button>
       <button type="button" class="btn btn-primary ms-1" style=" height: 35px" onclick ="clearInputs()">Clear</button>
     </div>
-    <svg height="100" width="100">
-      <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
-    </svg> 
   </div>
 </center>
   </div>
   <script>
+    var num =[];
+    var right_num=[],river_num=[];
+    var colour =["blue","red","DarkGrey","ForestGreen","Orchid"];
+    var num_steps,step,all_step=[];
+    var cs=0; 
+
     function inputEachType()
     {
       var type = document.getElementById("soilderType");
@@ -87,101 +87,247 @@
 
     function clearInputs()
     {
-      var clear = document.getElementById("soilderInp");
-      clear.remove();
+      if(document.getElementById("soilderInp"))
+      document.getElementById("soilderInp").remove();
+      if(document.getElementById("demo"))
+      document.getElementById("demo").remove();
+      if(document.getElementById("nxt"))
+      document.getElementById("nxt").remove();
+      if(document.getElementById("cal_button"))
       document.getElementById("cal_button").remove();
+      if(document.getElementById("nosol"))
+      document.getElementById("nosol").remove();
       var type = document.getElementById("soilderType");
-      // type.setAttribute("value",NULL);
+      // type.innerHTML=NULL;
       type.removeAttribute("disabled"); 
       document.getElementById("next").removeAttribute("disabled");
+      num =[],right_num=[],river_num=[],all_step=[], cs=0; 
     }
 
-    function set_state(num,colour,right_num,river_num)
+    function set_state()
     {
-      for(i = 0;i<=num.length;i++)
+      var ele =document.getElementsByName("dots"+(cs-1));
+      console.log(ele);
+      console.log(num,river_num,right_num);
+      var len = ele.length;
+      if(len>0)
+      {
+        for(var i=ele.length-1;i>=0;i--)
+        {
+            ele[i].parentNode.removeChild(ele[i]);
+        }
+      }
+      for(var i = 0;i<=num.length;i++)
       {
         if(num[i])
         {
-          for(ii= 0 ;ii<num[ii];ii++)
+          for(var ii= 0 ;ii<num[i];ii++)
           {
             var c = document.createElement("span");
-            c.setAttribute("class","dot");
+            c.setAttribute("class","dot m-2");
             c.setAttribute("style","background-color : "+colour[i]);
+            c.setAttribute("name","dots"+cs);
             document.getElementById("left").appendChild(c);
           }
         }
-      }
-      for(i = 0;i<=right_num.length;i++)
-      {
+    
         if(right_num[i])
         {
-          for(ii= 0 ;ii<right_num[ii];ii++)
+          for(var ii= 0 ;ii<right_num[i];ii++)
           {
             var c = document.createElement("span");
-            c.setAttribute("class","dot");
+            c.setAttribute("class","dot m-2");
             c.setAttribute("style","background-color : "+colour[i]);
+            c.setAttribute("name","dots"+cs);
             document.getElementById("right").appendChild(c);
           }
         }
-      }
-      for(i = 0;i<=river_num.length;i++)
-      {
         if(river_num[i])
         {
-          for(ii= 0 ;ii<river_num[ii];ii++)
+          for(var ii= 0 ;ii<river_num[i];ii++)
           {
             var c = document.createElement("span");
-            c.setAttribute("class","dot");
+            c.setAttribute("class","dot m-2");
             c.setAttribute("style","background-color : "+colour[i]);
+            c.setAttribute("name","dots"+cs);
             document.getElementById("river").appendChild(c);
           }
         }
       }
     }
 
-    function create_img(num_steps,step,num,right_num,river_num)
+    function next_state()
     {
-      var colour =["blue","red","DarkGrey","ForestGreen","Orchid"]
-      var cover2 = document.createElement("div");
-      cover2.setAttribute("class","d-flex");
-      var left = document.createElement("div");
-      left.setAttribute("id","left");
-      left.setAttribute("class","d-flex align-content-between flex-wrap");
-      var right = document.createElement("div");
-      right.setAttribute("id","right");
-      right.setAttribute("class","d-flex align-content-between flex-wrap");
-      var river = document.createElement("div");
-      river.setAttribute("id","river");
-      river.setAttribute("class","d-flex align-content-between flex-wrap");
-      cover2.appendChild(left);
-      cover2.appendChild(right);
-      cover2.appendChild(river);
-      document.body.appendChild(cover2);
-      
-      set_state(num,colour,right_num,river_num);
-      
+      var change = all_step[cs];
+      cs++;
+      if(change["left"][0]!="n")
+      {
+        if(change["left"][0]=="a")
+        {
+          num[change["left"][1]-1]++;
+          if(change["left"].length >2)
+            num[change["left"][2]-1]++;
+        }
+        else
+        {
+          num[change["left"][1]-1]--;
+          if(change["left"].length >2)
+            num[change["left"][2]-1]--;
+        }
+      }
+      if(change["right"][0]!="n")
+      {
+        if(change["right"][0]=="a")
+        {
+          right_num[change["right"][1]-1]++;
+          if(change["right"].length >2)
+            right_num[change["right"][2]-1]++;
+        }
+        else
+        {
+          right_num[change["right"][1]-1]--;
+          if(change["right"].length >2)
+            right_num[change["right"][2]-1]--;
+        }
+      }
+
+      if(change["river"][0]!="n")
+      {
+        if(change["river"][0]=="a")
+        {
+          river_num[change["river"][1]-1]++;
+          if(change["river"].length >2)
+            river_num[change["river"][2]-1]++;
+        }
+        else
+        {
+          river_num[change["river"][1]-1]--;
+          if(change["river"].length >2)
+            river_num[change["river"][2]-1]--;
+        }
+      }
+      set_state();
+      if(cs ==all_step.length)
+      document.getElementById("nxt").setAttribute("disabled","true");
     }
 
-
+    function create_img()
+    {
+      
+      var cover2 = document.createElement("div");
+      cover2.setAttribute("class","d-flex justify-content-center mt-5");
+      cover2.setAttribute("id","demo");
+      var left = document.createElement("div");
+      left.setAttribute("id","left");
+      left.setAttribute("class","d-flex  align-items-center flex-wrap justify-content-end");
+      left.setAttribute("style","background-color : MediumSeaGreen ; width :300px; height:300px");
+      var right = document.createElement("div");
+      right.setAttribute("id","right");
+      right.setAttribute("class","d-flex align-items-center flex-wrap justify-content-start");
+      right.setAttribute("style","background-color : MediumSeaGreen ; width :300px; height:300px");
+      var river = document.createElement("div");
+      river.setAttribute("id","river");
+      river.setAttribute("class","d-flex  align-items-center flex-wrap justify-content-center");
+      river.setAttribute("style","background-color : Aquamarine ; width :300px; height:300px");
+      cover2.appendChild(left);
+      cover2.appendChild(river);
+      cover2.appendChild(right);
+      document.body.appendChild(cover2);
+      set_state();
+      var nxtdiv =document.createElement("div")
+      // nxtdiv.setAttribute("class","d-flex justify-content-evenly")
+      var nxt = document.createElement("button");
+      nxt.setAttribute("id","nxt");
+      nxt.setAttribute("class","btn btn-primary mt-3");
+      nxt.setAttribute("onclick","next_state()");
+      nxtdiv.setAttribute("align","center");
+      nxt.innerHTML= "Next";
+      nxtdiv.appendChild(nxt);
+      document.body.appendChild(nxtdiv);
+    }
 
     function getAnswer()
     {
       var type = document.getElementById("soilderType").value;
-      var num =[];
+      
       for(i=1;i<=type;i++)
       {
         num.push(document.getElementById("type_"+i).value);
       }
       axios.post('http://0.0.0.0:3000/getSolution',{ number: document.getElementById("soilderType").value , values :num })
       .then((res)=>{
-        var num_steps = res.data[1];
-        var step = res.data[0];
-        var right_num = new Array(num.length).fill(0);
-        var river_num = new Array(num.length).fill(0); 
-        create_img(num_steps,step,num,right_num,river_num);
-        for(var i=0;i< num_steps;i++)
+        num_steps = res.data[1];
+        step = res.data[0];
+        right_num = new Array(num.length).fill(0);
+        river_num = new Array(num.length).fill(0);
+        var t=0; 
+        for(var i=0;i<num_steps;i++)
         {
-          
+          if(t==0)//L->R
+          {
+            {
+              var curr =[];
+              var l=[],r=[],ri=[];
+              l.push('s',step[i][0],step[i][1]);
+              ri.push('a',step[i][0],step[i][1]);
+              r.push('n');
+              curr["left"]=l;
+              curr["right"]=r;
+              curr["river"]=ri;
+              all_step.push(curr);
+            }
+            {
+              var curr =[];
+              var l=[],r=[],ri=[];
+              r.push('a',step[i][0],step[i][1]);
+              ri.push('s',step[i][0],step[i][1]);
+              l.push('n');
+              curr["left"]=l;
+              curr["right"]=r;
+              curr["river"]=ri;
+              all_step.push(curr);
+            }
+            t=1;
+          }
+          else//R->L
+          {
+            {
+              var curr =[];
+              var l=[],r=[],ri=[];
+              r.push('s',step[i][0]);
+              ri.push('a',step[i][0]);
+              l.push('n');
+              curr["left"]=l;
+              curr["right"]=r;
+              curr["river"]=ri;
+              all_step.push(curr);
+            }
+            {
+              var curr =[];
+              var l=[],r=[],ri=[];
+              l.push('a',step[i][0]);
+              ri.push('s',step[i][0]);
+              r.push('n');
+              curr["left"]=l;
+              curr["right"]=r;
+              curr["river"]=ri;
+              all_step.push(curr);
+            }
+            t=0;
+          }
+        }
+        
+        if(!num_steps)
+        {
+          var nosol = document.createElement("h4");
+          nosol.innerHTML="No solution is possible!";
+          nosol.setAttribute("id","nosol");
+          nosol.setAttribute("class","mt-3");
+          document.getElementById("inp").appendChild(nosol);
+        }
+        else
+        {
+          create_img();
         }
       })
     }
