@@ -26,16 +26,16 @@
   <h1 class ="mt-5">River Crossing Problem Solver</h1>
  </center>
   <div class="d-flex justify-content-evenly mt-5 ">
-    <div>
+    <div style="width:500px">
       <h2>How to calculate the solution</h2>
       <ul>
-      <li> First enter the number of type of soilders for which you want to solve the problem</li>
+      <li> Enter the number of type of soilders for which you want to solve the problem</li>
       <li>Then enter the number of soilders of each type</li>
-      <li>Click on the next button to see the next step taken to reach the solution</li>
+      <li>Click on the next button to see the subsequent solution</li>
       </ul>
     </div>
     <center>
-    <div id="inp" style="width:540px">
+    <div id="inp" style="width:600px">
      
     <div class="d-flex justify-content-evenly" >
       <input class =" " style="width:400px ; height: 39px" placeholder="Enter the number of type of soilders" style="color:black" name="number" id="soilderType"/>
@@ -48,7 +48,7 @@
   <script>
     var num =[];
     var right_num=[],river_num=[];
-    var colour =["blue","red","DarkGrey","ForestGreen","Orchid"];
+    var colour =["Coral",'Indigo',"Yellow","DarkCyan","Purple","Orange","DimGray","ForestGreen","HotPink",'DarkRed',];
     var num_steps,step,all_step=[];
     var cs=0; 
 
@@ -68,7 +68,12 @@
       {
         var cover = document.createElement("div");
         cover.setAttribute("class","mt-3 ms-5");
+        var c = document.createElement("span");
+        c.setAttribute("class","dot ");
+        c.setAttribute("style","background-color : "+colour[i-1]);
+        cover.appendChild(c);
         var inp = document.createElement("INPUT");
+        inp.setAttribute("class","ms-2");
         inp.setAttribute("placeholder", "Number of soilder of type " + i);
         inp.setAttribute("id","type_"+i);
         cover.appendChild(inp);
