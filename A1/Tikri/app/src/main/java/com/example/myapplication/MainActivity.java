@@ -3,8 +3,12 @@ package com.example.myapplication;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -48,14 +52,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
         mListView = (ListView) findViewById(R.id.listView);
         mButtonSend = (FloatingActionButton) findViewById(R.id.btn_send);
         mEditTextMessage = (EditText) findViewById(R.id.et_message);
         mImageView = (ImageView) findViewById(R.id.iv_image);
         mAdapter = new MessageAdapt(this, new ArrayList<MessageFn>());
         mListView.setAdapter(mAdapter);
-        MessageFn msgquery = new MessageFn("Enter your User Id to chat with me! \n\n If you have previously not talked to me,I suggest you pick up a username and we are good to go.", false, false);
-        mAdapter.add(msgquery);
+        //MessageFn msgquery = new MessageFn("Enter your User Id to chat with me! \n\n If you have previously not talked to me,I suggest you pick up a username and we are good to go.", false, false);
+        //mAdapter.add(msgquery);
+        //SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        //userid = prefs.getString("name", "");
 
 
 //code for sending the message
@@ -65,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String msg = mEditTextMessage.getText().toString();
                 if(firstmsg == true){
-                    userid = msg;
+                   userid = msg;
 
                     MessageFn userMsg = new MessageFn(userid, true, false);
                     mAdapter.add(userMsg);
 
-                    String toDisplay = msg + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
+                    String toDisplay = userid + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
                     MessageFn displayGetMsg = new MessageFn(toDisplay, false, false);
                     mAdapter.add(displayGetMsg);
                     getMessages(mAdapter,userid);
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     public void getMessages(final MessageAdapt mAdapter,String userid){
+        System.out.println("AAYA");
         String URL = "http://10.0.2.2:8000/users/" + userid;
         JsonArrayRequest objectRequest = new JsonArrayRequest(
                 Request.Method.GET,
