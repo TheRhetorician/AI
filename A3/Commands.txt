@@ -1,0 +1,5 @@
+CREATE TABLE neighbours ( id bigint PRIMARY KEY, connected bigint []);
+Viewing table schema
+SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = 'city';
+select nodes from planet_osm_ways where {node[0]} = any(nodes);
+INSERT INTO neighbours (id,connected) VALUES ({node[0]},ARRAY {neigh}); 
