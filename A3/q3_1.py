@@ -4,6 +4,7 @@ from time import time
 from id_coord import *
 from preprocess_2 import *
 
+
 class Node:
     def __init__(self, node_id, latitude, longitude, parent_id, gn):
         self.node_id = node_id
