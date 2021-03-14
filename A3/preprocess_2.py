@@ -20,15 +20,6 @@ def preprocess():
                     id_neigh[row[0][i]].add(row[0][i+1])
                 else:
                     id_neigh[row[0][i]] = set([row[0][i+1]])
-
-
-    # for key in tqdm(id_neigh):
-    #     # print(key,id_neigh[key])
-    #     cur3 = conn.cursor()
-    #     cur3.execute(f"INSERT INTO neighbours (id,connected) VALUES ({key},ARRAY {list(id_neigh[key])}); ")
     conn.commit()
     conn.close()
     return id_neigh
-# preprocess()
-# CREATE TABLE neighbours ( id bigint PRIMARY KEY, connected bigint []);
-# SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = 'city';

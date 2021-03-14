@@ -3,11 +3,13 @@ from flask import Flask, render_template,url_for
 from flask import request
 from flask_cors import CORS
 import json
+from id_coord import makeDict
+from preprocess_2 import preprocess
+from q3_1 import calc
 
 app = Flask(__name__)
 CORS(app)
 app.config["DEBUG"]= True
-
 
 @app.route("/")
 def index():
@@ -17,16 +19,21 @@ def index():
     return render_template("index.html")   
 
 
-@app.route('/getSolution' , methods=['POST'])
+@app.route('/getPath' , methods=['POST'])
 def search():
     ''' 
     '''
     req_data = request.get_json()
-    print(req_data)
-    
+    slat = req_data['slati']
+    slon = req_data['slong']
+    dlat = req_data['dlati']
+    dlon = req_data['dlong']
+    final_route = calc(slat, slon, dlat, dlon, node_coord, id_neigh)
+    return {0:final_route}
     
 
 if __name__ == "__main__":
+    node_coord = makeDict()
+    id_neigh = preprocess()
+    print(dir())
     app.run(host='0.0.0.0', port=3000, debug=True)
-
-#  ,docs=[["Movie 1","Some year", "something else","another attribute"]]

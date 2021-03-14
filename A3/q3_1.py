@@ -4,6 +4,7 @@ from time import time
 from id_coord import *
 from preprocess_2 import *
 
+conn = psycopg2.connect(database="final", user = "kriti", password = "root", host = "127.0.0.1", port = "5432")
 
 class Node:
     def __init__(self, node_id, latitude, longitude, parent_id, gn):
@@ -21,12 +22,12 @@ class Node:
         return diff
 
 
-def search_neighbours(node_id):
+def search_neighbours(node_id, id_neigh):
     if(id_neigh[node_id]):
         return list(id_neigh[node_id])
     return []
 
-def create_node(node_id, parent_id = None, latitude = None , longitude = None, gn = 0):
+def create_node(node_id, node_coord, parent_id = None, latitude = None , longitude = None, gn = 0):
     latitude, longitude = node_coord[node_id][0] , node_coord[node_id][1]
     node = Node(node_id, latitude, longitude, parent_id, gn)
     return node
@@ -38,18 +39,20 @@ def give_id(lat, lon):
     return rows[0][0]
 
 
-def distance(node_id, new_latitude, new_longitude):
+def distance(node_id, new_latitude, new_longitude, node_coord):
     latitude, longitude = node_coord[node_id][0] , node_coord[node_id][1]
     diff = abs(latitude - new_latitude) + abs(longitude-new_longitude)
     return diff
 
 
-def path_search(latitude, longitude, target_latitude, target_longitude):
+def path_search(latitude, longitude, target_latitude, target_longitude, node_coord, id_neigh):
+    if(latitude ==target_latitude and longitude==target_longitude):
+        return []
     prior_queue = []
     seen = set()
     node_id = give_id(latitude, longitude)
     start_id = node_id
-    node = create_node(node_id, None, latitude, longitude, 0)
+    node = create_node(node_id, node_coord, None, latitude, longitude, 0)
     hn = node.get_hn(target_latitude, target_longitude)
     id_node = {}
 
@@ -80,17 +83,19 @@ def path_search(latitude, longitude, target_latitude, target_longitude):
             break
 
         seen.add(node.node_id)
-        neighbours = search_neighbours(node.node_id)
+        neighbours = search_neighbours(node.node_id, id_neigh)
 
         for neighbour in neighbours:
             if neighbour not in seen:	
-                new_node = create_node(neighbour, node.node_id, gn = node.gn + distance(neighbour, latitude, longitude)) 
+                new_node = create_node(neighbour, node_coord, node.node_id, gn = node.gn + distance(neighbour, latitude, longitude,node_coord)) 
                 new_hn = new_node.get_hn(target_latitude, target_longitude)
                 heappush(prior_queue, (new_hn + new_node.gn, k, new_node))
                 k = k + 1
 
     route = []
+    
     node_id = target_id
+    
     while True:
         node = id_node[node_id]
         route.append(node)
@@ -101,28 +106,26 @@ def path_search(latitude, longitude, target_latitude, target_longitude):
     route = list(reversed(route))
     return route
 
-if __name__ == '__main__' :
+def calc(slat, slong, dlat, dlong, node_coord, id_neigh):
     t1= time()
-    conn = psycopg2.connect(database="final", user = "kriti", password = "root", host = "127.0.0.1", port = "5432")
-    
-    latitude = 172405060
-    longitude = 784258271
-    target_latitude = 175469351
-    target_longitude = 785726514
+    latitude = slat
+    longitude = slong
+    target_latitude = dlat
+    target_longitude = dlong
 
-    node_coord = makeDict()
-    id_neigh = preprocess()
-    route = path_search(latitude, longitude, target_latitude, target_longitude)
+    route = path_search(latitude, longitude, target_latitude, target_longitude, node_coord, id_neigh)
     
+    final_route=[]
     for node in route :
-        print(node.latitude, node.longitude)
+        final_route.append([node.latitude/10**7, node.longitude/10**7])
 
-    print(len(route))
-    conn.commit()
-    conn.close()
     t2=time()
-    print()
-    print()
+    print("---------------------------------------")
+    print("Calculation time\n")
     print(t2-t1)
-# 172405060  784258271
-# 175469351  785726514
+    return final_route
+
+# if __name__ == '__main__' :
+#     node_coord = makeDict()
+#     id_neigh = preprocess()
+#     calc(172405060, 784258271, 175469351,  785726514, node_coord, id_neigh)
