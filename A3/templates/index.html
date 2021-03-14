@@ -66,8 +66,9 @@
     <div id="my_map_add" class="d-flex justify-content-center mt-3" style="width:900px;height:550px;" ></div>
   
   <script type="text/javascript">
-
+   dist=0;
   function getPath() {
+    dist=0;
     var s = document.getElementById("source").value.split(",");
     var slat = parseInt(s[0]);
     var slon = parseInt(s[1]);
@@ -79,23 +80,25 @@
     {
       console.log(res)
       path=[]
+      path2=[]
       for(var i=0;i<res.data[0].length;i++)
       {
         var obj= { lat: res.data[0][i][0] ,lng: res.data[0][i][1] };
         path.push(obj);
+        var obj2= new Microsoft.Maps.Location(res.data[0][i][0],res.data[0][i][1] );
+        path2.push(obj2);
       }
-      my_map_add(path)
+      my_map_add(path,path2)
     })
 }
- dist=0;
-function my_map_add(linel) 
+
+function my_map_add(linel,linel2) 
 {
   // var mapdiv = document.createElement("div");
   // mapdiv.setAttribute("id","my_map_add");
   // mapdiv.setAttribute("class","d-flex justify-content-center");
   // mapdiv.setAttribute("style","width:900px;height:500px;");
   // document.body.appendChild(mapdiv);
-  console.log(linel[0].lat)
   var myMapCenter = new google.maps.LatLng(17.4157279,78.4661834);
   var myMapStart = new google.maps.LatLng(linel[0].lat,linel[0].lng);
   var myMapEnd = new google.maps.LatLng(linel[linel.length-1].lat,linel[linel.length-1].lng);
@@ -105,14 +108,25 @@ function my_map_add(linel)
   marker.setMap(map);
   var markerdest = new google.maps.Marker({position:myMapEnd});
   markerdest.setMap(map);
-  // console.log (Microsoft.Maps.SpatialMath.getDistanceTo(linel[0], linel[linel.length-1], Microsoft.Maps.SpatialMath.DistanceUnits.Miles));
-
+  Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function(){
+    for(var i=0;i<linel.length-1;i++)
+    {
+    dist+=Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[i].lat, linel[i].lng), new Microsoft.Maps.Location(linel[i+1].lat,linel[i+1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers);
+    // console.log(Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[i].lat, linel[i].lng), new Microsoft.Maps.Location(linel[i+1].lat,linel[i+1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
+    }
+  console.log("distance is" ,dist);
+  console.log(Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[0].lat, linel[0].lng), new Microsoft.Maps.Location(linel[linel.length-1].lat,linel[linel.length-1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
+}
+  );
+  
   // Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function(){
-  //   console.log("hi"+Microsoft.Maps.SpatialMath.getDistanceTo(linel[0], linel[linel.length-1], Microsoft.Maps.SpatialMath.DistanceUnits.Miles));
+  //   st= new Microsoft.Maps.Location(linel[0].lat, linel[0].lng);
+  //   console.log("hi22"+Microsoft.Maps.SpatialMath.Geometry.distance(st, linel2, Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
   // });
-  line=linel
+  
+  // line=linel
   var flightPath = new google.maps.Polyline({
-    path:line,
+    path:linel,
     strokeColor:"#0000FF",
     strokeOpacity:0.8,
     strokeWeight:2,
