@@ -70,7 +70,7 @@ def userDetailsGet(user):
         dic['address'] = str_address.decode("UTF-8")
         dic['contact'] = str_contact.decode("UTF-8")
         chat_user.append(dic)
-
+    print(dic)
     cnx.close()
     return jsonify(chat_user)
 
@@ -87,7 +87,7 @@ def userDetailsPost(user):
     str_contact = json['contact'].encode('UTF-8', 'ignore')
     insertUser(str_userid, str_password, str_name, str_address, str_contact)
 
-    return jsonify({'response': str_response})
+    return jsonify({'response': "added"})
 
 
 @app.route('/users/<user>/query', methods=['POST'])
@@ -139,7 +139,7 @@ def insertUser(user, password, name, address, contact):
                                   host='127.0.0.1',
                                   database='user_chats', auth_plugin='mysql_native_password')
     mycursor = cnx.cursor()
-    sql = "INSERT INTO users (userid,password,name,address,emergency_contact) VALUES (%s,%s,%s,%s)"
+    sql = "INSERT INTO users (userid,password,name,address,emergency_contact) VALUES (%s,%s,%s,%s,%s)"
     val = (user, password, name, address, contact)
     mycursor.execute(sql, val)
     cnx.commit()

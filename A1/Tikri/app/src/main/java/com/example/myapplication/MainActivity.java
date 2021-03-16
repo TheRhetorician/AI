@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mImageView;
     private MessageAdapt mAdapter;
     boolean firstmsg = true;
+    boolean chalo = false;
     String userid = "test";
+    private static final int REQUEST_LOGIN = 0;
     public MainActivity()
     {
     }
@@ -53,7 +55,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
+        startActivityForResult(intent, REQUEST_LOGIN);
+
+
+        /*while(!chalo)
+        {
+
+        }*/
         mListView = (ListView) findViewById(R.id.listView);
         mButtonSend = (FloatingActionButton) findViewById(R.id.btn_send);
         mEditTextMessage = (EditText) findViewById(R.id.et_message);
@@ -65,7 +74,63 @@ public class MainActivity extends AppCompatActivity {
         //SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
         //userid = prefs.getString("name", "");
 
+        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userid = saved_values.getString("userid", "XXX");
 
+        String URL = "http://10.0.2.2:8000/users/" + userid+"/details";
+        final String[] nm = new String[1];
+        final String[] us = new String[1];
+        final String[] pass = new String[1];
+        final String[] EMC = new String[1];
+        final String[] pata = new String[1];
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonArrayRequest objectRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                URL,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println("Response received");
+                        Log.e("rest Response",response.toString());
+                        try {
+                            //SONArray Products = ItemDetail.getJSONObject(0).getJSONArray("Products");
+                            us[0] = response.getJSONObject(0).get("userid").toString();
+                            pass[0] = response.getJSONObject(0).get("password").toString();
+                            nm[0] = response.getJSONObject(0).get("name").toString();
+                            pata[0] = response.getJSONObject(0).get("address").toString();
+                            EMC[0] = response.getJSONObject(0).get("contact").toString();
+                            sendMessage("Userid is "+us[0],userid);
+                            sendMessage("Password is "+pass[0],userid);
+                            sendMessage("Name is "+nm[0],userid);
+                            sendMessage("Address is "+pata[0],userid);
+                            sendMessage("Emergency Contact is "+EMC[0],userid);
+
+
+                            //displayPastMessages(response,mAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("error");
+                        Log.e("resttt",error.toString());
+                    }
+                }
+        );
+        requestQueue.add(objectRequest);
+        String toDisplay = "Hello "+userid + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
+        MessageFn displayGetMsg = new MessageFn(toDisplay, false, false);
+        mAdapter.add(displayGetMsg);
+        getMessages(mAdapter,userid);
+        firstmsg = false;
+
+        mEditTextMessage.setText("");
+        mListView.setSelection(mAdapter.getCount() - 1);
 //code for sending the message
         mButtonSend.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,19 +138,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String msg = mEditTextMessage.getText().toString();
                 if(firstmsg == true){
-                   userid = msg;
+                   //userid = msg;
 
-                    MessageFn userMsg = new MessageFn(userid, true, false);
-                    mAdapter.add(userMsg);
+                    //MessageFn userMsg = new MessageFn(userid, true, false);
+                    //mAdapter.add(userMsg);
 
-                    String toDisplay = userid + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
-                    MessageFn displayGetMsg = new MessageFn(toDisplay, false, false);
-                    mAdapter.add(displayGetMsg);
-                    getMessages(mAdapter,userid);
-                    firstmsg = false;
 
-                    mEditTextMessage.setText("");
-                    mListView.setSelection(mAdapter.getCount() - 1);
 
                 }
                 else{
@@ -95,6 +153,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGIN) {
+            if (resultCode == RESULT_OK) {
+
+                // TODO: Implement successful signup logic here
+                // By default we just finish the Activity and log them in automatically
+                chalo = true;
+            }
+        }
     }
     public void getMessages(final MessageAdapt mAdapter,String userid){
         System.out.println("AAYA");

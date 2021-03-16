@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -87,7 +88,11 @@ public class LoginActivity extends AppCompatActivity {
 
         String userid = _useridText.getText().toString();
         String password = _passwordText.getText().toString();
-
+        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor=saved_values.edit();
+        editor.putString("userid",userid);
+        //editor.putInt("foo",foo);
+        editor.commit();
 
         // TODO: Implement your own authentication logic here.
 
@@ -139,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String userid = _useridText.getText().toString();
         String password = _passwordText.getText().toString();
+        System.out.println(userid);
         String URL = "http://10.0.2.2:8000/users/" + userid+"/details";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonArrayRequest objectRequest = new JsonArrayRequest(
@@ -175,10 +181,10 @@ public class LoginActivity extends AppCompatActivity {
             valid = false;
         else {
             valid = true;
-            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            /*SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("name", String.valueOf(_useridText));
-            editor.apply();
+            editor.apply();*/
         }
         return valid;
     }

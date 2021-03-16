@@ -2,6 +2,17 @@
 <aiml version="1.0.1">
 
 <category>
+<pattern>Hi</pattern>
+<template>
+        <random>
+            <li> Hello! </li>
+            <li> Hi! Nice to meet you! </li>
+            <li> Hi,such a long time! </li>
+        </random>
+</template>
+</category>
+
+<category>
 <pattern>Hello *</pattern>
 <template>
         <random>
@@ -14,7 +25,7 @@
 
 <category>
 <pattern>WHO ARE YOU</pattern>
-<template> I am a chatbot, silly! </template>
+<template> I am your memory assistant! </template>
 </category>
 
 <category>
@@ -69,8 +80,6 @@
 <that>HELLO HOW ARE YOU</that>
 <template>That's sad.Take some rest.</template>
 </category>
-
-
 
 <category>
 <pattern>My name is *</pattern>
