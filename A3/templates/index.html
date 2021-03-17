@@ -15,8 +15,7 @@
 <body>
   
     <h1 class="mt-3">Path Finder</h1>
-
-
+    
     <div class="d-flex justify-content-center mt-3">
       <div class="mr-5">
         <select id="source" class=" form-select bg-light m-1 " >
@@ -78,7 +77,6 @@
     axios.post('http://0.0.0.0:3000/getPath',{ slati: slat, slong: slon, dlati: dlat, dlong: dlon })
     .then((res)=>
     {
-      console.log(res)
       path=[]
       path2=[]
       for(var i=0;i<res.data[0].length;i++)
@@ -94,37 +92,50 @@
 
 function my_map_add(linel,linel2) 
 {
-  // var mapdiv = document.createElement("div");
-  // mapdiv.setAttribute("id","my_map_add");
-  // mapdiv.setAttribute("class","d-flex justify-content-center");
-  // mapdiv.setAttribute("style","width:900px;height:500px;");
-  // document.body.appendChild(mapdiv);
   var myMapCenter = new google.maps.LatLng(17.4157279,78.4661834);
   var myMapStart = new google.maps.LatLng(linel[0].lat,linel[0].lng);
+  var midind = Math.ceil((linel.length-1)/2);
+  var myMapMid = new google.maps.LatLng(linel[midind].lat,linel[midind].lng);
   var myMapEnd = new google.maps.LatLng(linel[linel.length-1].lat,linel[linel.length-1].lng);
   var myMapProp = {center:myMapCenter, zoom:11, scrollwheel:false, draggable:true, mapTypeId:google.maps.MapTypeId.ROADMAP};
   var map = new google.maps.Map(document.getElementById("my_map_add"),myMapProp);
-  var marker = new google.maps.Marker({position:myMapStart});
-  marker.setMap(map);
-  var markerdest = new google.maps.Marker({position:myMapEnd});
-  markerdest.setMap(map);
-  Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function(){
+  var marker = new google.maps.Marker({
+    position:myMapStart,
+    label: 'S',
+    map: map,
+});
+  var markerdest = new google.maps.Marker({
+    position:myMapEnd,
+    label: 'D',
+    map: map,
+});
+
+  
+
+  Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function()
+  {
     for(var i=0;i<linel.length-1;i++)
     {
     dist+=Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[i].lat, linel[i].lng), new Microsoft.Maps.Location(linel[i+1].lat,linel[i+1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers);
-    // console.log(Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[i].lat, linel[i].lng), new Microsoft.Maps.Location(linel[i+1].lat,linel[i+1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
     }
-  console.log("distance is" ,dist);
-  console.log(Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[0].lat, linel[0].lng), new Microsoft.Maps.Location(linel[linel.length-1].lat,linel[linel.length-1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
-}
-  );
-  
-  // Microsoft.Maps.loadModule('Microsoft.Maps.SpatialMath', function(){
-  //   st= new Microsoft.Maps.Location(linel[0].lat, linel[0].lng);
-  //   console.log("hi22"+Microsoft.Maps.SpatialMath.Geometry.distance(st, linel2, Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
-  // });
-  
-  // line=linel
+    console.log("distance is" ,dist);
+    console.log("straight line distance is:" ,Microsoft.Maps.SpatialMath.getDistanceTo(new Microsoft.Maps.Location(linel[0].lat, linel[0].lng), new Microsoft.Maps.Location(linel[linel.length-1].lat,linel[linel.length-1].lng), Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers));
+    var hour = Math.floor(dist/40);
+    var min = Math.ceil(((dist*60)/40)%60);
+    const contentString =
+          '<div id="content">' +
+          "<p>Estimated travel time is "+ hour + " hours " +min +" minutes.<br>Estimated distance is "+dist.toFixed(2) +" km"+
+          "</p>" +
+          "</div>";
+        const infow = new google.maps.InfoWindow({
+          content: contentString,
+        });
+        infow.setPosition(myMapMid);
+        infow.open(map);             
+
+  });
+
+  //make a polyline.. Also make this polyline at the end. Billing error.
   var flightPath = new google.maps.Polyline({
     path:linel,
     strokeColor:"#0000FF",
@@ -132,24 +143,9 @@ function my_map_add(linel,linel2)
     strokeWeight:2,
     map: map,
   }); 
-  
-  // var service = new google.maps.DistanceMatrixService();
-  // service.getDistanceMatrix(
-  //   {
-  //     origins: [linel[0]],
-  //     destinations: [linel[linel.length-1]],
-  //     travelMode: google.maps.TravelMode.DRIVING,
-  //     unitSystem: google.maps.UnitSystem.METRIC,
-  //     avoidHighways: false,
-  //     avoidTolls: false,
-  //   },
-  //   (response, status) => {
-  //     console.log(response)
-  //   })
-  
   map.addObject(flightPath);
+  
 }
-// google.maps.event.addDomListener(my_map_add, 'click', initialize);
   </script>
 
   <script

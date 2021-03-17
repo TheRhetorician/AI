@@ -8,3 +8,5 @@ sudo /etc/init.d/postgresql start
 sudo /etc/init.d/postgresql stop
 
 psql -U kriti postgre -d final
+
+osm2pgsql -s -G -U username -d database -W file.osm
