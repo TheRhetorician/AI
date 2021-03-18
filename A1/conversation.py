@@ -16,8 +16,6 @@ def learn():
     k.learn("data/bot.aiml")
 
 
-learn()
-
 
 def findResponse(query):
     response = k.respond(query)

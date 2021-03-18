@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <aiml version="1.0.1">
 
+
+<!-- App specific AIML -->
+
+<category>
+<pattern>name is *</pattern>
+<template>
+         Okay <set name = "username"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>address is *</pattern>
+<template>
+         Okay <set name = "address"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>emergency contact is *</pattern>
+<template>
+         Okay <set name = "contact"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>What is my Name</pattern>
+<template>Your Name is <get name = "username"/></template>
+</category>
+
+<category>
+<pattern>contact</pattern>
+<template>You can contact <get name = "contact"/></template>
+</category>
+
+<category>
+<pattern>Where do I live</pattern>
+<template>You live <get name = "address"/></template>
+</category>
+
+<!-- App specific AIML -->
+
 <category>
 <pattern>Hi</pattern>
 <template>
@@ -18,7 +59,7 @@
         <random>
             <li> Hello! </li>
             <li> Hi! Nice to meet you! </li>
-            <li> Hi,such a long time! </li>
+            <li> Hi, such a long time! </li>
         </random>
 </template>
 </category>
@@ -34,7 +75,7 @@
         <random>
             <li> Hello! </li>
             <li> Hi! Nice to meet you! </li>
-            <li> Hi,such a long time! </li>
+            <li> Hi, such a long time! </li>
         </random>
 </template>
 </category>
@@ -44,7 +85,7 @@
 <template>
     <random>
     <li> Anytime for you! </li>
-    <li> Don't thank me!Thank the team behind this.Long live the developers! </li>
+    <li> Don't thank me! Thank the team behind this. Long live the developers! </li>
     <li> The pleasure is mine. </li>
     </random>
 </template>
@@ -55,7 +96,7 @@
 <template>
     <random>
     <li> Anytime for you! </li>
-    <li> Don't thank me!Thank the team behind this.Long live the developers! </li>
+    <li> Don't thank me! Thank the team behind this.Long live the developers! </li>
     <li> The pleasure is mine. </li>
     </random>
 </template>
@@ -81,12 +122,6 @@
 <template>That's sad.Take some rest.</template>
 </category>
 
-<category>
-<pattern>My name is *</pattern>
-<template>
-         Hello <set name = "username"> <star/>! </set>
-</template>
-</category>
 
 <category>
 <pattern>Bye</pattern>

@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
-from conversation import findResponse
+from conversation import findResponse,learn
 import mysql.connector
 app = Flask(__name__)
+app.config["DEBUG"]= True
 
 # TODO increase size of sql table columns
 
@@ -28,7 +29,7 @@ def userGet(user):
 
     for x in myresult:
         dic = {}
-
+        print(x)
         str_time = x[1].encode('UTF-8', 'ignore')
         str_userid = x[2].encode('UTF-8', 'ignore')
         str_query = x[3].encode('UTF-8', 'ignore')
@@ -39,6 +40,7 @@ def userGet(user):
         dic['query'] = str_query.decode("UTF-8")
         dic['response'] = str_response.decode("UTF-8")
         chat_user.append(dic)
+        # learn()
 
     cnx.close()
     return jsonify(chat_user)
@@ -70,7 +72,7 @@ def userDetailsGet(user):
         dic['address'] = str_address.decode("UTF-8")
         dic['contact'] = str_contact.decode("UTF-8")
         chat_user.append(dic)
-    print(dic)
+        print(dic)
     cnx.close()
     return jsonify(chat_user)
 
@@ -94,12 +96,13 @@ def userDetailsPost(user):
 def userQuery(user):
     print('Printing post request', request)
     json = request.get_json()
-    print('json:', json)
+    print( type(json['query']))
     str_userid = json['userid'].encode('UTF-8', 'ignore')
     str_query = json['query'].encode('UTF-8', 'ignore')
+    print("\n\n",str_query)
     str_time = json['time'].encode('UTF-8', 'ignore')
     print(str_query.decode("UTF-8"))
-    print("MUDITITITITITI")
+    # learn()
     str_response = findResponse(str_query.decode("UTF-8"))
 
     insertIntoDb(str_userid, str_query, str_time, str_response)
@@ -114,6 +117,31 @@ def testPost():
     print('json:', json)
     return {'status': json['query']}
 
+@app.route('/learn', methods=['POST'])
+def postman_learn():
+    learn()
+    req_data = request.get_json()
+    user = req_data['user']
+    cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='user_chats', auth_plugin='mysql_native_password')
+    # a database cursor is a control structure that enables traversal over the records in a database
+    mycursor = cnx.cursor()
+    a = user
+    val = (a,)
+
+    mycursor.execute("SELECT * FROM users WHERE userid=%s", val)
+    myresult = mycursor.fetchall()
+    for x in myresult:
+        name = x[2]
+        address = x[3]
+        contact = x[4]
+    
+    q_name = "name is " + name
+    q_address = "address is " + str(address)
+    q_contact = "emergency contact is " + str(contact) 
+    print(findResponse(q_name))
+    findResponse(q_address)
+    findResponse(q_contact)
+    return {"done": "done"}
 
 @app.route('/test/response')
 def test():
@@ -147,7 +175,7 @@ def insertUser(user, password, name, address, contact):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=8000)
+    app.run(host='127.0.0.1', port=8000, debug=True)
     cnx = mysql.connector.connect(user='root', password='root',
                                   host='127.0.0.1',
                                   database='user_chats', auth_plugin='mysql_native_password')
