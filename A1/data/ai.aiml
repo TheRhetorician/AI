@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <aiml version="1.0.1">
 
+<!-- User specific AIML -->
+
+<category>
+<pattern>name is *</pattern>
+<template>
+         Okay <set name = "username"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>address is *</pattern>
+<template>
+         Okay <set name = "address"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>emergency contact is *</pattern>
+<template>
+         Okay <set name = "contact"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>What is my Name</pattern>
+<template>Your Name is <get name = "username"/></template>
+</category>
+
+<category>
+<pattern>contact</pattern>
+<template>You can contact <get name = "contact"/></template>
+</category>
+
+<category>
+<pattern>Where do I live</pattern>
+<template>You live <get name = "address"/></template>
+</category>
+
+
+<!-- App specific AIML -->
+
 <category>
 <pattern>Hi</pattern>
 <template>
@@ -70,6 +111,11 @@
 </category>
 
 <category>
+<pattern>What's my name?</pattern>
+<template> Your name is <get name = "username"/> </template>
+</category>
+
+<category>
 <pattern>i am fine</pattern>
 <that>HELLO HOW ARE YOU</that>
 <template>That's so great to hear.</template>
@@ -99,76 +145,6 @@
 <template>Bye <get name = "username"/> Thanks for the conversation!</template>
 </category>
 
-
-<category>
-<pattern>Can you help * course * semester</pattern>
-<template>Sure,what domain are you interested in?Finance,Data Science,Robotics?</template>
-</category>
-
-<category>
-<pattern>Finance</pattern>
-<that>SURE WHAT DOMAIN ARE YOU INTERESTED IN FINANCE DATA SCIENCE ROBOTICS</that>
-<template>A prosperous field.You should look into these courses:FoFa, POE, Stock Market Valuation.These are the fundamentals
-and you will enjoy them.</template>
-</category>
-
-<category>
-<pattern>Data Science</pattern>
-<that>SURE WHAT DOMAIN ARE YOU INTERESTED IN FINANCE DATA SCIENCE ROBOTICS</that>
-<template>A trending field.You should look into these courses:Data mining by Aruna Madam and AI by Hota Sir.</template>
-</category>
-
-<category>
-<pattern>Robotics</pattern>
-<that>SURE WHAT DOMAIN ARE YOU INTERESTED IN FINANCE DATA SCIENCE ROBOTICS</that>
-<template>A lot of good work is going on right now here.Check out Linear algebra by KVR Sir and Analog Electronics by Alivelu madam.</template>
-</category>
-
-<category>
-<pattern>None</pattern>
-<that>SURE WHAT DOMAIN ARE YOU INTERESTED IN FINANCE DATA SCIENCE ROBOTICS</that>
-<template>Are you sure you are not interested in any domain?</template>
-</category>
-
-<category>
-<pattern>None</pattern>
-<that> SURE WHAT DOMAIN ARE YOU INTERESTED IN</that>
-<template>Are you sure you are not interested in any domain?</template>
-</category>
-
-<category>
-<pattern>Yes</pattern>
-<that> ARE YOU SURE YOU ARE NOT INTERESTED IN ANY DOMAIN</that>
-<template>But you wanted to choose an elective this semester right?</template>
-</category>
-
-<category>
-<pattern>Yes</pattern>
-<that> BUT YOU WANTED TO CHOOSE AN ELECTIVE THIS SEMESTER RIGHT</that>
-<template>Can you tell me the name of one of your favourite professors here?</template>
-</category>
-
-<category>
-<pattern>None</pattern>
-<that>CAN YOU TELL ME THE NAME OF ONE OF YOUR FAVOURITE PROFESSORS HERE</that>
-<template>No problem,seems like you are a fresher.AI,Effective Public Speaking and DSA are highly rated by your seniors.Check them out!</template>
-</category>
-
-
-<category>
-<pattern>Hota</pattern>
-<template>http://localhost:8000/profs/Mr. Chittaranjan Hota</template>
-</category>
-
-<category>
-<pattern>Ray</pattern>
-<template>http://localhost:8000/profs/Mr. Tathagata Ray</template>
-</category>
-
-<category>
-<pattern>Bhanumurthy</pattern>
-<template>http://localhost:8000/profs/Mr NL Bhanumurthy</template>
-</category>
 
 
 <category>
