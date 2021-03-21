@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <aiml version="1.0.1">
 
+<<<<<<< HEAD
 <!-- User specific AIML -->
+=======
+
+<!-- App specific AIML -->
+>>>>>>> 356f17f7e1eac9a17f6286fd0a2cf969a32f40be
 
 <category>
 <pattern>name is *</pattern>
@@ -39,7 +44,10 @@
 <template>You live <get name = "address"/></template>
 </category>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 356f17f7e1eac9a17f6286fd0a2cf969a32f40be
 <!-- App specific AIML -->
 
 <category>
@@ -59,7 +67,7 @@
         <random>
             <li> Hello! </li>
             <li> Hi! Nice to meet you! </li>
-            <li> Hi,such a long time! </li>
+            <li> Hi, such a long time! </li>
         </random>
 </template>
 </category>
@@ -75,7 +83,7 @@
         <random>
             <li> Hello! </li>
             <li> Hi! Nice to meet you! </li>
-            <li> Hi,such a long time! </li>
+            <li> Hi, such a long time! </li>
         </random>
 </template>
 </category>
@@ -85,7 +93,7 @@
 <template>
     <random>
     <li> Anytime for you! </li>
-    <li> Don't thank me!Thank the team behind this.Long live the developers! </li>
+    <li> Don't thank me! Thank the team behind this. Long live the developers! </li>
     <li> The pleasure is mine. </li>
     </random>
 </template>
@@ -96,7 +104,7 @@
 <template>
     <random>
     <li> Anytime for you! </li>
-    <li> Don't thank me!Thank the team behind this.Long live the developers! </li>
+    <li> Don't thank me! Thank the team behind this.Long live the developers! </li>
     <li> The pleasure is mine. </li>
     </random>
 </template>
@@ -127,12 +135,6 @@
 <template>That's sad.Take some rest.</template>
 </category>
 
-<category>
-<pattern>My name is *</pattern>
-<template>
-         Hello <set name = "username"> <star/>! </set>
-</template>
-</category>
 
 <category>
 <pattern>Bye</pattern>
