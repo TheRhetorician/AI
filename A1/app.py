@@ -1,15 +1,8 @@
 from flask import Flask, request, jsonify
-<<<<<<< HEAD
 from conversation import findResponse, learn
 import mysql.connector
 app = Flask(__name__)
 app.config["DEBUG"] = True
-=======
-from conversation import findResponse,learn
-import mysql.connector
-app = Flask(__name__)
-app.config["DEBUG"]= True
->>>>>>> 356f17f7e1eac9a17f6286fd0a2cf969a32f40be
 
 # TODO increase size of sql table columns
 
@@ -103,17 +96,14 @@ def userDetailsPost(user):
 def userQuery(user):
     print('Printing post request', request)
     json = request.get_json()
-<<<<<<< HEAD
     print(type(json['query']))
     str_userid = json['userid'].encode('UTF-8', 'ignore')
     str_query = json['query'].encode('UTF-8', 'ignore')
     print("\n\n", str_query)
-=======
-    print( type(json['query']))
+    print(type(json['query']))
     str_userid = json['userid'].encode('UTF-8', 'ignore')
     str_query = json['query'].encode('UTF-8', 'ignore')
-    print("\n\n",str_query)
->>>>>>> 356f17f7e1eac9a17f6286fd0a2cf969a32f40be
+    print("\n\n", str_query)
     str_time = json['time'].encode('UTF-8', 'ignore')
     print(str_query.decode("UTF-8"))
     # learn()
@@ -131,31 +121,6 @@ def testPost():
     print('json:', json)
     return {'status': json['query']}
 
-@app.route('/learn', methods=['POST'])
-def postman_learn():
-    learn()
-    req_data = request.get_json()
-    user = req_data['user']
-    cnx = mysql.connector.connect(user='root', password='root',host='127.0.0.1',database='user_chats', auth_plugin='mysql_native_password')
-    # a database cursor is a control structure that enables traversal over the records in a database
-    mycursor = cnx.cursor()
-    a = user
-    val = (a,)
-
-    mycursor.execute("SELECT * FROM users WHERE userid=%s", val)
-    myresult = mycursor.fetchall()
-    for x in myresult:
-        name = x[2]
-        address = x[3]
-        contact = x[4]
-    
-    q_name = "name is " + name
-    q_address = "address is " + str(address)
-    q_contact = "emergency contact is " + str(contact) 
-    print(findResponse(q_name))
-    findResponse(q_address)
-    findResponse(q_contact)
-    return {"done": "done"}
 
 @app.route('/learn', methods=['POST'])
 def postman_learn():
