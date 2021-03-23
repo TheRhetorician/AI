@@ -188,32 +188,5 @@ if __name__ == "__main__":
                                   host='127.0.0.1',
                                   database='user_chats', auth_plugin='mysql_native_password')
     mycursor = cnx.cursor()
-    #mycursor.execute("create table customers(name VARCHAR(255))")
-
-    '''
-    code for inserting into db
-    '''
-    # sql = "INSERT INTO chats (time,userid,query,response) VALUES (%s,%s,%s,%s)"
-    # val = ("24/3","smit","insert from code","hope it works!");
-    # mycursor.execute(sql,val)
-    # cnx.commit()
-    # print(mycursor.rowcount,"record inserted")
-
-    ''''
-    code for fetching from db
-    '''
-    # a="smit"
-    # val=(a,)
-    # mycursor.execute("SELECT * FROM chats WHERE userid=%s",val)
-    # myresult = mycursor.fetchall()
-    # chat_user=[]
-    # for x in myresult:
-    #     str_time = x[1].encode('UTF-8','ignore')
-    #     str_userid = x[2].encode('UTF-8','ignore')
-    #     str_query = x[3].encode('UTF-8','ignore')
-    #     str_response = x[4].encode('UTF-8','ignore')
-    #     chat_user.append([str_time,str_userid,str_query,str_response])
-    #     print(type(x[2]))
-    # print(chat_user)
 
     cnx.close()

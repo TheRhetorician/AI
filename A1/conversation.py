@@ -14,7 +14,7 @@ k = aiml.Kernel()
 def learn():
     k.learn("data/ai.aiml")
     k.learn("data/bot.aiml")
-
+    k.learn("data/humor.aiml")
 
 
 def findResponse(query):
@@ -33,40 +33,12 @@ def findResponse(query):
         print('User entered a prof name,now finding courses')
         response = "You can take one of these courses taught by your favourite prof:" + \
             getCourses(response)
-    elif response == "call top trending in url.py":
-        jobs = topTrending()
-        response = "Google's pick:"
-        for job in jobs:
-            response += job + ","
-
-        return response
     elif response == "":
         responseMsgs = ["Sorry,I don't understand that!", "I searched through dozens of articles,but to no avail.Sorry!"
                         "I am unable to answer this.Please inform the developers!"]
         response = random.choice(responseMsgs)
     return response
 
-def getCourses(query):
-
-    a = query[28:]
-    val = (a,)
-    print('val:', val)
-    cnx = mysql.connector.connect(user='root', password='root',
-                                  host='127.0.0.1',
-                                  database='user_chats', auth_plugin='mysql_native_password')
-
-    sql = "SELECT * FROM faculty WHERE name = %s"
-    mycursor.execute(sql, val)
-    myresult = mycursor.fetchall()
-    dic = {}
-    for x in myresult:
-        str_prof = x[1].encode('ascii', 'ignore')
-        str_subjects = x[2].encode('ascii', 'ignore')
-        dic['prof'] = str_prof
-        dic['subjects'] = str_subjects
-
-    cnx.close()
-    return dic['subjects']
 # while True:
 #     query = raw_input("User > ")
 #     response = findResponse(query)

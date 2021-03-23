@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         String msg = mEditTextMessage.getText().toString();
 
 
-                        if(msg.indexOf("Where do I live")>=0){
+                        if(msg.indexOf("Where do I live")>=0  || msg.indexOf("What's my address")>=0){
                             sendMessage(msg,userid);
                             mEditTextMessage.setText("");
                             mListView.setSelection(mAdapter.getCount() - 1);

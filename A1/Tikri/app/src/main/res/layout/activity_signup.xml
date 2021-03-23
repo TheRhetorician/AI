@@ -20,7 +20,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            tools:srcCompat="@android:drawable/btn_star_big_on" />
+            tools:srcCompat="@mipmap/ic_launcher" />
 
         <!--  Userid Label -->
         <com.google.android.material.textfield.TextInputLayout
