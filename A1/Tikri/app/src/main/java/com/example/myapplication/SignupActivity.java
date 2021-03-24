@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +37,7 @@ import static com.example.myapplication.R.style.Theme_MyApplication;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-
+    String user = "";
 
     @BindView(R.id.input_userid) TextInputEditText _useridText;
     @BindView(R.id.input_password) TextInputEditText _passwordText;
@@ -93,6 +95,7 @@ public class SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String address = _addressText.getText().toString();
         String contact = _contactText.getText().toString();
+        user = userid;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // TODO: Implement your own signup logic here.
         String URL = "http://10.0.2.2:8000/users/" + userid + "/details";
@@ -145,6 +148,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
+        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor=saved_values.edit();
+        editor.putString("userid",user);
+        //editor.putInt("foo",foo);
+        editor.commit();
         setResult(RESULT_OK, null);
         finish();
     }
