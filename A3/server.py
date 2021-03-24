@@ -9,7 +9,7 @@ from q3_1 import calc
 
 app = Flask(__name__)
 CORS(app)
-app.config["DEBUG"]= True
+app.config["DEBUG"]= False
 
 @app.route("/")
 def index():
@@ -35,4 +35,4 @@ def search():
 if __name__ == "__main__":
     node_coord = makeDict()
     id_neigh = preprocess()
-    app.run(host='0.0.0.0', port=3000, debug=True)
+    app.run(host='0.0.0.0', port=3000, debug=False)
