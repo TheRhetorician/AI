@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         String msg = mEditTextMessage.getText().toString();
 
 
-                        if(msg.indexOf("Where do I live")>=0  || msg.indexOf("What's my address")>=0){
+                        if(msg.indexOf("Where do I live")>=0  || msg.indexOf("What is my address")>=0){
                             sendMessage(msg,userid);
                             mEditTextMessage.setText("");
                             mListView.setSelection(mAdapter.getCount() - 1);
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + video_id));
                             startActivity(intent);
                         }
-                        else if(msg.indexOf("What's my emergency contact")>=0) {
+                        else if(msg.indexOf("What is my emergency contact")>=0 || msg.indexOf("Whom can I call")>=0) {
                             sendMessage(msg,userid);
                             mEditTextMessage.setText("");
                             mListView.setSelection(mAdapter.getCount() - 1);
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.setData(Uri.parse("tel: "+EMC2[0]));
                             startActivity(intent);
                         }
-                        else if(msg.indexOf("What's my Doctor's contact")>=0) {
+                        else if(msg.indexOf("What is my Doctors contact")>=0) {
                             sendMessage(msg,userid);
                             mEditTextMessage.setText("");
                             mListView.setSelection(mAdapter.getCount() - 1);
