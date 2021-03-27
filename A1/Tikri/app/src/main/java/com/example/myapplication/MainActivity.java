@@ -84,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 final String[] nm = new String[1];
                 final String[] us = new String[1];
                 final String[] pass = new String[1];
-                final String[] EMC = new String[1];
+                final String[] EMC1 = new String[1];
+                final String[] EMCN1 = new String[1];
+                final String[] EMC2 = new String[1];
+                final String[] EMCN2 = new String[1];
+                final String[] DC = new String[1];
+                final String[] DCN = new String[1];
                 final String[] pata = new String[1];
                 RequestQueue requestQueue = Volley.newRequestQueue(this);
                 JsonArrayRequest objectRequest = new JsonArrayRequest(
@@ -103,12 +108,17 @@ public class MainActivity extends AppCompatActivity {
                                     pass[0] = response.getJSONObject(0).get("password").toString();
                                     nm[0] = response.getJSONObject(0).get("name").toString();
                                     pata[0] = response.getJSONObject(0).get("address").toString();
-                                    EMC[0] = response.getJSONObject(0).get("contact").toString();
+                                    EMC1[0] = response.getJSONObject(0).get("contact1").toString();
+                                    EMCN1[0] = response.getJSONObject(0).get("contact name1").toString();
+                                    EMC2[0] = response.getJSONObject(0).get("contact2").toString();
+                                    EMCN2[0] = response.getJSONObject(0).get("contact name2").toString();
+                                    DC[0] = response.getJSONObject(0).get("doctor contact").toString();
+                                    DCN[0] = response.getJSONObject(0).get("doctor name").toString();
                                     //sendMessage("Userid is "+us[0],userid);
                                     //sendMessage("Password is "+pass[0],userid);
                                     //sendMessage("Name is "+nm[0],userid);
                                     //sendMessage("Address is "+pata[0],userid);
-                                    //sendMessage("Emergency Contact is "+EMC[0],userid);
+                                    //sendMessage("Emergency Contact is "+EMC1[0],userid);
 
 
                                     //displayPastMessages(response,mAdapter);
@@ -197,12 +207,28 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + video_id));
                             startActivity(intent);
                         }
-                        else if(msg.indexOf("contact")>=0) {
+                        else if(msg.indexOf("What's my emergency contact")>=0) {
                             sendMessage(msg,userid);
                             mEditTextMessage.setText("");
                             mListView.setSelection(mAdapter.getCount() - 1);
                             Intent intent = new Intent(Intent.ACTION_DIAL);
-                            intent.setData(Uri.parse("tel: "+EMC[0]));
+                            intent.setData(Uri.parse("tel: "+EMC1[0]));
+                            startActivity(intent);
+                        }
+                        else if(msg.indexOf("Who else can I call")>=0) {
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel: "+EMC2[0]));
+                            startActivity(intent);
+                        }
+                        else if(msg.indexOf("What's my Doctor's contact")>=0) {
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel: "+DC[0]));
                             startActivity(intent);
                         }
                         else{

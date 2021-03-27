@@ -65,12 +65,22 @@ def userDetailsGet(user):
         str_password = x[1].encode('UTF-8', 'ignore')
         str_name = x[2].encode('UTF-8', 'ignore')
         str_address = x[3].encode('UTF-8', 'ignore')
-        str_contact = x[4].encode('UTF-8', 'ignore')
+        str_contact1 = x[4].encode('UTF-8', 'ignore')
+        str_contactnm1 = x[5].encode('UTF-8', 'ignore')
+        str_contact2 = x[6].encode('UTF-8', 'ignore')
+        str_contactnm2 = x[7].encode('UTF-8', 'ignore')
+        str_contactdoc = x[8].encode('UTF-8', 'ignore')
+        str_docname = x[9].encode('UTF-8', 'ignore')
         dic['userid'] = str_userid.decode("UTF-8")
         dic['password'] = str_password.decode("UTF-8")
         dic['name'] = str_name.decode("UTF-8")
         dic['address'] = str_address.decode("UTF-8")
-        dic['contact'] = str_contact.decode("UTF-8")
+        dic['contact1'] = str_contact1.decode("UTF-8")
+        dic['contact name1'] = str_contactnm1.decode("UTF-8")
+        dic['contact2'] = str_contact2.decode("UTF-8")
+        dic['contact name2'] = str_contactnm2.decode("UTF-8")
+        dic['doctor contact'] = str_contactdoc.decode("UTF-8")
+        dic['doctor name'] = str_docname.decode("UTF-8")
         chat_user.append(dic)
         print(dic)
     cnx.close()
@@ -86,8 +96,14 @@ def userDetailsPost(user):
     str_password = json['password'].encode('UTF-8', 'ignore')
     str_name = json['name'].encode('UTF-8', 'ignore')
     str_address = json['address'].encode('UTF-8', 'ignore')
-    str_contact = json['contact'].encode('UTF-8', 'ignore')
-    insertUser(str_userid, str_password, str_name, str_address, str_contact)
+    str_contact1 = json['contact1'].encode('UTF-8', 'ignore')
+    str_contactnm1 = json['contact name1'].encode('UTF-8', 'ignore')
+    str_contact2 = json['contact2'].encode('UTF-8', 'ignore')
+    str_contactnm2 = json['contact name2'].encode('UTF-8', 'ignore')
+    str_contactdoc = json['doctor contact'].encode('UTF-8', 'ignore')
+    str_docname = json['doctor name'].encode('UTF-8', 'ignore')
+    insertUser(str_userid, str_password, str_name, str_address, str_contact1,
+               str_contactnm1, str_contact2, str_contactnm2, str_contactdoc, str_docname)
 
     return jsonify({'response': "added"})
 
@@ -139,15 +155,30 @@ def postman_learn():
     for x in myresult:
         name = x[2]
         address = x[3]
-        contact = x[4]
+        contact1 = x[4]
+        contactnm1 = x[5]
+        contact2 = x[6]
+        contactnm2 = x[7]
+        contactdoc = x[8]
+        docname = x[9]
 
     q_name = "name is " + str(name)
     q_address = "address is " + str(address)
-    q_contact = "emergency contact is " + str(contact)
+    q_contact1 = "emergency contact is " + str(contact1)
+    q_contactnm1 = "emergency contact's name is " + str(contactnm1)
+    q_contact2 = "second emergency contact is " + str(contact2)
+    q_contactnm2 = "second emergency contact's name is " + str(contactnm2)
+    q_contactdoc = "doctor's contact is " + str(contactdoc)
+    q_docname = "doctor's name is " + str(docname)
     print(name)
     print(findResponse(q_name))
     findResponse(q_address)
-    findResponse(q_contact)
+    findResponse(q_contact1)
+    findResponse(q_contactnm1)
+    findResponse(q_contact2)
+    findResponse(q_contactnm2)
+    findResponse(q_contactdoc)
+    findResponse(q_docname)
     return jsonify({"done": "done"})
 
 
@@ -170,13 +201,14 @@ def insertIntoDb(user, query, time1, response):
     cnx.close()
 
 
-def insertUser(user, password, name, address, contact):
+def insertUser(user, password, name, address, contact1, contactnm1, contact2, contactnm2, contactdoc, docname):
     cnx = mysql.connector.connect(user='root', password='root',
                                   host='127.0.0.1',
                                   database='user_chats', auth_plugin='mysql_native_password')
     mycursor = cnx.cursor()
-    sql = "INSERT INTO users (userid,password,name,address,emergency_contact) VALUES (%s,%s,%s,%s,%s)"
-    val = (user, password, name, address, contact)
+    sql = "INSERT INTO users (userid,password,name,address,contact1,contactname1,contact2,contactname2,doctorcontact,doctorname) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    val = (user, password, name, address, contact1, contactnm1,
+           contact2, contactnm2, contactdoc, docname)
     mycursor.execute(sql, val)
     cnx.commit()
     cnx.close()

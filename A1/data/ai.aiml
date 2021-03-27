@@ -23,7 +23,42 @@
 <category>
 <pattern>emergency contact is *</pattern>
 <template>
-         Okay <set name = "contact"> <star/>! </set>
+         Okay <set name = "contact1"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>emergency contact's name is *</pattern>
+<template>
+         Okay <set name = "contactnm1"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>second emergency contact's name is *</pattern>
+<template>
+         Okay <set name = "contactnm2"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>second emergency contact is *</pattern>
+<template>
+         Okay <set name = "contact2"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>doctor's contact is *</pattern>
+<template>
+         Okay <set name = "contactdoc"> <star/>! </set>
+</template>
+</category>
+
+<category>
+<pattern>doctor's name is *</pattern>
+<template>
+         Okay <set name = "docname"> <star/>! </set>
 </template>
 </category>
 
@@ -39,12 +74,22 @@
 
 <category>
 <pattern>Whom can I contact</pattern>
-<template>You can contact <get name = "contact"/></template>
+<template>You can contact <get name = "contactnm1"/> on <get name = "contact1"/></template>
+</category>
+
+<category>
+<pattern>Who else can I call</pattern>
+<template>You can contact <get name = "contactnm2"/> on <get name = "contact2"/></template>
 </category>
 
 <category>
 <pattern>What's my emergency contact</pattern>
-<template>You can contact <get name = "contact"/></template>
+<template><srai>Whom can I contact</srai></template>
+</category>
+
+<category>
+<pattern>What's my Doctor's contact</pattern>
+<template>You can contact <get name = "docname"/> on <get name = "contactdoc"/></template>
 </category>
 
 <category>
