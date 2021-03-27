@@ -266,7 +266,7 @@
       {
         num.push(document.getElementById("type_"+i).value);
       }
-      axios.post('http://0.0.0.0:3000/getSolution',{ number: document.getElementById("soilderType").value , values :num })
+      axios.post('http://0.0.0.0:5000/getSolution',{ number: document.getElementById("soilderType").value , values :num })
       .then((res)=>{
         num_steps = res.data[1];
         step = res.data[0];
