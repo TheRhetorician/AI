@@ -102,6 +102,8 @@
       document.getElementById("cal_button").remove();
       if(document.getElementById("nosol"))
       document.getElementById("nosol").remove();
+      if(document.getElementById("count"))
+      document.getElementById("count").remove();
       var type = document.getElementById("soilderType");
       // type.innerHTML=NULL;
       type.removeAttribute("disabled"); 
@@ -249,6 +251,11 @@
       nxt.innerHTML= "Next";
       nxtdiv.appendChild(nxt);
       document.body.appendChild(nxtdiv);
+
+      var cnt =document.createElement("h3");
+      cnt.setAttribute("id","count");
+      cnt.innerHTML = "Steps required are " + num_steps;
+      nxtdiv.appendChild(cnt);
     }
 
     function getAnswer()
