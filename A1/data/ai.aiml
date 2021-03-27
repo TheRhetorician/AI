@@ -28,14 +28,14 @@
 </category>
 
 <category>
-<pattern>emergency contact's name is *</pattern>
+<pattern>emergency contacts name is *</pattern>
 <template>
          Okay <set name = "contactnm1"> <star/>! </set>
 </template>
 </category>
 
 <category>
-<pattern>second emergency contact's name is *</pattern>
+<pattern>second emergency contacts name is *</pattern>
 <template>
          Okay <set name = "contactnm2"> <star/>! </set>
 </template>
@@ -49,14 +49,14 @@
 </category>
 
 <category>
-<pattern>doctor's contact is *</pattern>
+<pattern>doctors contact is *</pattern>
 <template>
          Okay <set name = "contactdoc"> <star/>! </set>
 </template>
 </category>
 
 <category>
-<pattern>doctor's name is *</pattern>
+<pattern>doctors name is *</pattern>
 <template>
          Okay <set name = "docname"> <star/>! </set>
 </template>
@@ -83,12 +83,12 @@
 </category>
 
 <category>
-<pattern>What's my emergency contact</pattern>
+<pattern>What is my emergency contact</pattern>
 <template><srai>Whom can I contact</srai></template>
 </category>
 
 <category>
-<pattern>What's my Doctor's contact</pattern>
+<pattern>What is my Doctors contact</pattern>
 <template>You can contact <get name = "docname"/> on <get name = "contactdoc"/></template>
 </category>
 
@@ -98,7 +98,7 @@
 </category>
 
 <category>
-<pattern>What's my address</pattern>
+<pattern>What is my address</pattern>
 <template>You live at <get name = "address"/></template>
 </category>
 
