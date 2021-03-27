@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -52,107 +53,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int num = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoginActivity.class);
         //startActivity(intent);
         startActivityForResult(intent, REQUEST_LOGIN);
 
-
-        /*while(!chalo)
-        {
-
-        }*/
-        mListView = (ListView) findViewById(R.id.listView);
-        mButtonSend = (FloatingActionButton) findViewById(R.id.btn_send);
-        mEditTextMessage = (EditText) findViewById(R.id.et_message);
-        mImageView = (ImageView) findViewById(R.id.iv_image);
-        mAdapter = new MessageAdapt(this, new ArrayList<MessageFn>());
-        mListView.setAdapter(mAdapter);
-        //MessageFn msgquery = new MessageFn("Enter your User Id to chat with me! \n\n If you have previously not talked to me,I suggest you pick up a username and we are good to go.", false, false);
-        //mAdapter.add(msgquery);
-        //SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
-        //userid = prefs.getString("name", "");
-
-        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        userid = saved_values.getString("userid", "XXX");
-
-        String URL = "http://10.0.2.2:8000/users/" + userid+"/details";
-        final String[] nm = new String[1];
-        final String[] us = new String[1];
-        final String[] pass = new String[1];
-        final String[] EMC = new String[1];
-        final String[] pata = new String[1];
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest objectRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                URL,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        System.out.println("Response received");
-                        Log.e("rest Response",response.toString());
-                        try {
-                            //SONArray Products = ItemDetail.getJSONObject(0).getJSONArray("Products");
-                            us[0] = response.getJSONObject(0).get("userid").toString();
-                            pass[0] = response.getJSONObject(0).get("password").toString();
-                            nm[0] = response.getJSONObject(0).get("name").toString();
-                            pata[0] = response.getJSONObject(0).get("address").toString();
-                            EMC[0] = response.getJSONObject(0).get("contact").toString();
-                            sendMessage("Userid is "+us[0],userid);
-                            sendMessage("Password is "+pass[0],userid);
-                            sendMessage("Name is "+nm[0],userid);
-                            sendMessage("Address is "+pata[0],userid);
-                            sendMessage("Emergency Contact is "+EMC[0],userid);
-
-
-                            //displayPastMessages(response,mAdapter);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("error");
-                        Log.e("resttt",error.toString());
-                    }
-                }
-        );
-        requestQueue.add(objectRequest);
-        String toDisplay = "Hello "+userid + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
-        MessageFn displayGetMsg = new MessageFn(toDisplay, false, false);
-        mAdapter.add(displayGetMsg);
-        getMessages(mAdapter,userid);
-        firstmsg = false;
-
-        mEditTextMessage.setText("");
-        mListView.setSelection(mAdapter.getCount() - 1);
-//code for sending the message
-        mButtonSend.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                String msg = mEditTextMessage.getText().toString();
-                if(firstmsg == true){
-                   //userid = msg;
-
-                    //MessageFn userMsg = new MessageFn(userid, true, false);
-                    //mAdapter.add(userMsg);
-
-
-
-                }
-                else{
-                    sendMessage(msg,userid);
-                    mEditTextMessage.setText("");
-                    mListView.setSelection(mAdapter.getCount() - 1);
-                }
-            }
-        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -162,7 +69,175 @@ public class MainActivity extends AppCompatActivity {
 
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
-                chalo = true;
+                int num = 0;
+                SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                userid = saved_values.getString("userid", "XXX");
+                System.out.println(userid+" "+num);
+                num++;
+                mListView = (ListView) findViewById(R.id.listView);
+                mButtonSend = (FloatingActionButton) findViewById(R.id.btn_send);
+                mEditTextMessage = (EditText) findViewById(R.id.et_message);
+                mImageView = (ImageView) findViewById(R.id.iv_image);
+                mAdapter = new MessageAdapt(this, new ArrayList<MessageFn>());
+                mListView.setAdapter(mAdapter);
+                String URL = "http://10.0.2.2:8000/users/" + userid+"/details";
+                final String[] nm = new String[1];
+                final String[] us = new String[1];
+                final String[] pass = new String[1];
+                final String[] EMC1 = new String[1];
+                final String[] EMCN1 = new String[1];
+                final String[] EMC2 = new String[1];
+                final String[] EMCN2 = new String[1];
+                final String[] DC = new String[1];
+                final String[] DCN = new String[1];
+                final String[] pata = new String[1];
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                JsonArrayRequest objectRequest = new JsonArrayRequest(
+                        Request.Method.GET,
+                        URL,
+                        null,
+                        new Response.Listener<JSONArray>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                System.out.println("Response received");
+                                Log.e("rest Response",response.toString());
+                                try {
+                                    //SONArray Products = ItemDetail.getJSONObject(0).getJSONArray("Products");
+                                    us[0] = response.getJSONObject(0).get("userid").toString();
+                                    pass[0] = response.getJSONObject(0).get("password").toString();
+                                    nm[0] = response.getJSONObject(0).get("name").toString();
+                                    pata[0] = response.getJSONObject(0).get("address").toString();
+                                    EMC1[0] = response.getJSONObject(0).get("contact1").toString();
+                                    EMCN1[0] = response.getJSONObject(0).get("contact name1").toString();
+                                    EMC2[0] = response.getJSONObject(0).get("contact2").toString();
+                                    EMCN2[0] = response.getJSONObject(0).get("contact name2").toString();
+                                    DC[0] = response.getJSONObject(0).get("doctor contact").toString();
+                                    DCN[0] = response.getJSONObject(0).get("doctor name").toString();
+                                    //sendMessage("Userid is "+us[0],userid);
+                                    //sendMessage("Password is "+pass[0],userid);
+                                    //sendMessage("Name is "+nm[0],userid);
+                                    //sendMessage("Address is "+pata[0],userid);
+                                    //sendMessage("Emergency Contact is "+EMC1[0],userid);
+
+
+                                    //displayPastMessages(response,mAdapter);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                System.out.println("error");
+                                Log.e("resttt",error.toString());
+                            }
+                        }
+                );
+                requestQueue.add(objectRequest);
+
+                //POSTMAN_LEARN
+                String URLp = "http://10.0.2.2:8000/learn";
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid",userid);
+                JsonObjectRequest objRequest = new JsonObjectRequest(URLp, new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    System.out.println(response.get("done"));
+                                    VolleyLog.v("Response to post query:%n %s", response.toString(4));
+                                    Log.e("rest Response",response.toString());
+                                    //parsedata(response);
+
+                                } catch (JSONException e) {
+                                    Log.e("resttt",e.toString());
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+                requestQueue.add(objRequest);
+                System.out.println("LEARN HOGAYA POSTMAN KO");
+
+                String toDisplay = "Hello "+userid + " I am fetching your messages.Let me use my speed booster for a busy person like you!";
+                MessageFn displayGetMsg = new MessageFn(toDisplay, false, false);
+                mAdapter.add(displayGetMsg);
+                getMessages(mAdapter,userid);
+                firstmsg = false;
+
+                mEditTextMessage.setText("");
+                mListView.setSelection(mAdapter.getCount() - 1);
+//code for sending the message
+                mButtonSend.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onClick(View v) {
+                        String msg = mEditTextMessage.getText().toString();
+
+
+                        if(msg.indexOf("Where do I live")>=0  || msg.indexOf("What's my address")>=0){
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Uri mapUri = Uri.parse("geo:0,0?q=" + Uri.encode(pata[0]));
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                            //userid = msg;
+
+                            //MessageFn userMsg = new MessageFn(userid, true, false);
+                            //mAdapter.add(userMsg);
+
+
+
+                        }
+                        else if(msg.indexOf("Show me a video")>=0){
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            String video_id = "SQ-SK_-LVRA";
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + video_id));
+                            startActivity(intent);
+                        }
+                        else if(msg.indexOf("What's my emergency contact")>=0) {
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel: "+EMC1[0]));
+                            startActivity(intent);
+                        }
+                        else if(msg.indexOf("Who else can I call")>=0) {
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel: "+EMC2[0]));
+                            startActivity(intent);
+                        }
+                        else if(msg.indexOf("What's my Doctor's contact")>=0) {
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                            Intent intent = new Intent(Intent.ACTION_DIAL);
+                            intent.setData(Uri.parse("tel: "+DC[0]));
+                            startActivity(intent);
+                        }
+                        else{
+                            sendMessage(msg,userid);
+                            mEditTextMessage.setText("");
+                            mListView.setSelection(mAdapter.getCount() - 1);
+                        }
+                    }
+                });
             }
         }
     }

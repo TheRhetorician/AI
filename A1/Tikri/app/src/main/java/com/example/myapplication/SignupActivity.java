@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,13 +37,18 @@ import static com.example.myapplication.R.style.Theme_MyApplication;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
-
+    String user = "";
 
     @BindView(R.id.input_userid) TextInputEditText _useridText;
     @BindView(R.id.input_password) TextInputEditText _passwordText;
     @BindView(R.id.input_name) TextInputEditText _nameText;
     @BindView(R.id.input_address) TextInputEditText _addressText;
-    @BindView(R.id.input_contact) TextInputEditText _contactText;
+    @BindView(R.id.input_contact) TextInputEditText _contact1Text;
+    @BindView(R.id.input_contact_name) TextInputEditText _contactnm1Text;
+    @BindView(R.id.input_secem_contact) TextInputEditText _contact2Text;
+    @BindView(R.id.input_contact_name2) TextInputEditText _contactnm2Text;
+    @BindView(R.id.input_doc_contact3) TextInputEditText _contact3Text;
+    @BindView(R.id.input_doctor_name) TextInputEditText _contactnm3Text;
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
 
@@ -61,7 +68,12 @@ public class SignupActivity extends AppCompatActivity {
         _useridText = (TextInputEditText) findViewById((R.id.input_userid));
         _passwordText = (TextInputEditText) findViewById((R.id.input_password));
         _addressText = (TextInputEditText) findViewById((R.id.input_address));
-        _contactText = (TextInputEditText) findViewById((R.id.input_contact));
+        _contact1Text = (TextInputEditText) findViewById((R.id.input_contact));
+        _contact2Text = (TextInputEditText) findViewById((R.id.input_secem_contact));
+        _contact3Text = (TextInputEditText) findViewById((R.id.input_doc_contact3));
+        _contactnm1Text = (TextInputEditText) findViewById((R.id.input_contact_name));
+        _contactnm2Text = (TextInputEditText) findViewById((R.id.input_contact_name2));
+        _contactnm3Text = (TextInputEditText) findViewById((R.id.input_doctor_name));
         _loginLink = (TextView) findViewById((R.id.link_login)) ;
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +104,13 @@ public class SignupActivity extends AppCompatActivity {
         String userid = _useridText.getText().toString();
         String password = _passwordText.getText().toString();
         String address = _addressText.getText().toString();
-        String contact = _contactText.getText().toString();
+        String contact1 = _contact1Text.getText().toString();
+        String contact2 = _contact2Text.getText().toString();
+        String contact3 = _contact3Text.getText().toString();
+        String cname1 = _contactnm1Text.getText().toString();
+        String cname2 = _contactnm2Text.getText().toString();
+        String cname3 = _contactnm3Text.getText().toString();
+        user = userid;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         // TODO: Implement your own signup logic here.
         String URL = "http://10.0.2.2:8000/users/" + userid + "/details";
@@ -105,7 +123,12 @@ public class SignupActivity extends AppCompatActivity {
         params.put("password",password);
         params.put("name",name);
         params.put("address",address);
-        params.put("contact",contact);
+        params.put("contact1",contact1);
+        params.put("contact name1",cname1);
+        params.put("contact2",contact2);
+        params.put("contact name2",cname2);
+        params.put("doctor contact",contact3);
+        params.put("doctor name",cname3);
         JsonObjectRequest objectRequest = new JsonObjectRequest(URL, new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -145,6 +168,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
+        SharedPreferences saved_values = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor=saved_values.edit();
+        editor.putString("userid",user);
+        //editor.putInt("foo",foo);
+        editor.commit();
         setResult(RESULT_OK, null);
         finish();
     }
@@ -162,7 +190,12 @@ public class SignupActivity extends AppCompatActivity {
         String userid = _useridText.getText().toString();
         String password = _passwordText.getText().toString();
         String address = _addressText.getText().toString();
-        String contact = _contactText.getText().toString();
+        String contact1 = _contact1Text.getText().toString();
+        String contact2 = _contact2Text.getText().toString();
+        String contact3 = _contact3Text.getText().toString();
+        String cname1 = _contactnm1Text.getText().toString();
+        String cname2 = _contactnm2Text.getText().toString();
+        String cname3 = _contactnm3Text.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -192,11 +225,23 @@ public class SignupActivity extends AppCompatActivity {
             _addressText.setError(null);
         }
 
-        if (contact.isEmpty() || contact.length() < 10 || password.length() > 10) {
-            _contactText.setError("exactly 10 digits");
+        if (contact1.isEmpty() || contact1.length() < 10 || password.length() > 10) {
+            _contact1Text.setError("exactly 10 digits");
             valid = false;
         } else {
-            _contactText.setError(null);
+            _contact1Text.setError(null);
+        }
+        if (contact2.isEmpty() || contact2.length() < 10 || password.length() > 10) {
+            _contact2Text.setError("exactly 10 digits");
+            valid = false;
+        } else {
+            _contact2Text.setError(null);
+        }
+        if (contact3.isEmpty() || contact3.length() < 10 || password.length() > 10) {
+            _contact3Text.setError("exactly 10 digits");
+            valid = false;
+        } else {
+            _contact3Text.setError(null);
         }
         return valid;
     }
