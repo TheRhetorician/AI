@@ -2,6 +2,9 @@ import psycopg2
 from tqdm import tqdm
 
 def preprocess():
+    '''
+    makes a dictionary to store all immediate neighbours of a given node(id)
+    '''
     conn = psycopg2.connect(database="final", user = "kriti", password = "root", host = "127.0.0.1", port = "5432")
     id_neigh={}
 

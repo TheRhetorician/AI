@@ -22,17 +22,18 @@ def index():
 @app.route('/getPath' , methods=['POST'])
 def search():
     ''' 
+    searches for path
     '''
     req_data = request.get_json()
     slat = req_data['slati']
     slon = req_data['slong']
     dlat = req_data['dlati']
     dlon = req_data['dlong']
-    final_route = calc(slat, slon, dlat, dlon, node_coord, id_neigh)
+    final_route = calc(slat, slon, dlat, dlon, node_coord, id_neigh) #calling the main function
     return {0:final_route}
     
 
 if __name__ == "__main__":
-    node_coord = makeDict()
-    id_neigh = preprocess()
+    node_coord = makeDict()#id_coord
+    id_neigh = preprocess()#preprocess_2
     app.run(host='0.0.0.0', port=3000, debug=False)
